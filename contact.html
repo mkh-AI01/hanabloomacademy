@@ -271,7 +271,7 @@
 
     <div class="contact-card">
       <div class="contact-card-label">School Type</div>
-      <div class="contact-card-value">Private Homeschool (Texas)<br><span style="font-size:1rem; color:var(--stone)">Established 2025 · K–12</span></div>
+      <div class="contact-card-value">Private Homeschool (Texas)<br><span style="font-size:1rem; color:var(--stone)">Established 2026 · K–12</span></div>
     </div>
 
     <div class="contact-card">
@@ -281,7 +281,7 @@
 
     <div class="status-badge">
       <div class="status-dot"></div>
-      Currently Enrolling · Academic Year 2025–2026
+      Currently Enrolling · Academic Year 2026–2027
     </div>
   </div>
 
@@ -290,7 +290,7 @@
     <p class="form-label-main">Send a Message</p>
     <h2 class="form-title">We'd love to hear<br>from you</h2>
 
-    <form id="contactForm" onsubmit="handleSubmit(event)">
+    <form id="contactForm" action="https://formspree.io/f/admin@hanabloomacademy.org" method="POST" onsubmit="handleSubmit(event)">
       <div class="form-row">
         <div class="form-group">
           <label for="fname">First Name</label>
@@ -348,7 +348,7 @@
   <div class="about-item fade-in">
     <div class="about-num">02</div>
     <h3 class="about-title">Parent-Administered</h3>
-    <p class="about-body">The school is administered by a credentialed parent with 25 years of executive experience in audit, risk, and education oversight.</p>
+    <p class="about-body">The school is administered by a credentialed parent with 25 years of executive experience in audit, risk, and cybersecurity — and a homeschooling parent since COVID. Hana Bloom Academy is the formalization of an education built on conviction, not circumstance.</p>
   </div>
   <div class="about-item fade-in">
     <div class="about-num">03</div>
@@ -372,7 +372,7 @@
 </section>
 
 <footer>
-  <span>© 2025 Hana Bloom Academy · Tomball, Texas · Private Homeschool</span>
+  <span>© 2026 Hana Bloom Academy · Tomball, Texas · Private Homeschool</span>
   <div style="display:flex; gap:2rem;">
     <a href="index.html">Home</a>
     <a href="academics.html">Academics</a>
@@ -381,10 +381,24 @@
 </footer>
 
 <script>
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    document.getElementById('contactForm').style.display = 'none';
-    document.getElementById('formSuccess').classList.add('show');
+    const form = document.getElementById('contactForm');
+    const data = new FormData(form);
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST', body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      } else {
+        alert('There was a problem sending your message. Please email us directly at admin@hanabloomacademy.org');
+      }
+    } catch {
+      alert('There was a problem sending your message. Please email us directly at admin@hanabloomacademy.org');
+    }
   }
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
