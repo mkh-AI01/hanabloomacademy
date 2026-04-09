@@ -1,0 +1,83 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Hana Bloom Academy — Automatic Site Deployment
+# ──────────────────────────────────────────────────────────────────────────────
+#
+# WHAT THIS DOES:
+#   Every time you push (save) any file to the "main" branch of this repository,
+#   GitHub automatically rebuilds and redeploys your website. No manual steps.
+#
+# ANALOGY (for an audit/risk background):
+#   Think of this as a standing automated control that fires on every change —
+#   like an automated reconciliation that runs the moment a transaction posts.
+#   The "trigger" is a file change. The "control" is the deployment. The "log"
+#   is the Actions run history — a permanent, timestamped audit trail.
+#
+# HOW TO READ THIS FILE:
+#   - "on:"        → WHEN does this run? (trigger conditions)
+#   - "jobs:"      → WHAT does it do? (the actual work)
+#   - "steps:"     → HOW does it do it? (the individual tasks in order)
+#   - "uses:"      → A pre-built action from GitHub's marketplace (like a plugin)
+# ──────────────────────────────────────────────────────────────────────────────
+
+name: Deploy Hana Bloom Academy Website
+
+# ── TRIGGER ───────────────────────────────────────────────────────────────────
+# This workflow runs automatically when files are pushed to the main branch.
+# It also appears as a manual "Run workflow" button in the Actions tab.
+on:
+  push:
+    branches:
+      - main          # fires on every save/push to main
+  workflow_dispatch:  # also allows manual trigger from GitHub UI
+
+# ── PERMISSIONS ───────────────────────────────────────────────────────────────
+# GitHub Pages requires these write permissions to publish your site.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# ── CONCURRENCY GUARD ─────────────────────────────────────────────────────────
+# If two pushes happen in quick succession, don't run two deployments at once.
+# Cancel any in-progress deployment and run the latest one.
+# (Like a queuing rule: only the most recent version goes to production.)
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+# ── THE JOB ───────────────────────────────────────────────────────────────────
+jobs:
+  deploy:
+    name: Build and Deploy Website
+    runs-on: ubuntu-latest       # runs on a fresh GitHub-hosted Linux server
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+
+      # STEP 1: Check out your code
+      # Copies all files from your repository onto the temporary server.
+      # Required first step for almost every GitHub Actions workflow.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # STEP 2: Configure GitHub Pages
+      # Tells GitHub this repository uses the Pages feature and sets it up.
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      # STEP 3: Package your site files
+      # Bundles all your HTML files into an "artifact" (a deployable package).
+      # The "path: '.'" means "package everything in the root folder."
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'             # uploads all files: index.html, academics.html, contact.html
+
+      # STEP 4: Deploy to GitHub Pages
+      # Takes the packaged artifact and makes it live on the internet.
+      # The outputs.page_url above captures the live URL for the summary.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
