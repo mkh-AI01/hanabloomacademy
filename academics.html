@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academics — Hana Bloom Academy</title>
+<meta name="description" content="Explore the full Hana Bloom Academy curriculum: classical literature, mathematics, sciences, history, technology, and enrichment — a structured K–12 program in Tomball, Texas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sage:    #4A7C59;
+    --sage-lt: #E8F0EA;
+    --sage-dk: #2D5A3D;
+    --ink:     #1C1C1A;
+    --stone:   #6B6960;
+    --parchment: #FAF8F3;
+    --cream:   #F3F0E8;
+    --bloom:   #C4785A;
+    --bloom-lt: #F5EAE3;
+    --white:   #FFFFFF;
+    --border:  rgba(74,124,89,0.18);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; font-weight: 300; color: var(--ink); background: var(--parchment); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,248,243,0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5vw; display: flex; align-items: center; justify-content: space-between; height: 68px;
+  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 500; color: var(--sage-dk); text-decoration: none; letter-spacing: 0.02em; }
+  .nav-logo span { display: block; font-size: 0.6rem; font-family: 'Jost', sans-serif; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--stone); margin-top: 1px; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.8rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--stone); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--sage); }
+
+  /* PAGE HERO */
+  .page-hero {
+    padding: 9rem 8vw 5rem;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+  }
+  .page-eyebrow { font-size: 0.72rem; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--bloom); margin-bottom: 1.25rem; }
+  .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 300; color: var(--sage-dk); line-height: 1.05; margin-bottom: 1.5rem; }
+  .page-title em { font-style: italic; color: var(--bloom); }
+  .page-intro { font-size: 1rem; line-height: 1.85; color: var(--stone); max-width: 62ch; }
+
+  /* OVERVIEW STATS */
+  .stats-band {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 8vw;
+    display: flex; gap: 0; flex-wrap: wrap;
+  }
+  .stat { flex: 1; min-width: 160px; padding: 0 3rem 0 0; border-right: 1px solid var(--border); margin-right: 3rem; }
+  .stat:last-child { border-right: none; margin-right: 0; }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--sage-dk); line-height: 1; margin-bottom: 0.35rem; }
+  .stat-label { font-size: 0.75rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--stone); }
+
+  /* SUBJECT SECTIONS */
+  .subjects { padding: 6rem 8vw; }
+  .section-label { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.35em; text-transform: uppercase; color: var(--bloom); margin-bottom: 0.75rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3vw, 3rem); font-weight: 400; color: var(--sage-dk); line-height: 1.15; margin-bottom: 1rem; }
+  .section-intro { font-size: 0.95rem; line-height: 1.85; color: var(--stone); max-width: 62ch; margin-bottom: 4rem; }
+
+  .subject-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .subject-item {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: start;
+    gap: 2rem;
+    padding: 2.5rem;
+    cursor: pointer;
+    transition: background 0.25s;
+    border-left: 3px solid transparent;
+  }
+  .subject-item:hover { background: var(--sage-lt); border-left-color: var(--sage); }
+  .subject-item.open { background: var(--sage-lt); border-left-color: var(--sage-dk); }
+
+  .subject-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--bloom-lt);
+    line-height: 1;
+    padding-top: 4px;
+  }
+  .subject-item.open .subject-tag { color: var(--bloom); }
+
+  .subject-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--sage-dk); margin-bottom: 0.4rem; }
+  .subject-tagline { font-size: 0.9rem; color: var(--stone); line-height: 1.6; }
+
+  .subject-details {
+    display: none;
+    padding: 0 2.5rem 2rem calc(80px + 4rem);
+    background: var(--sage-lt);
+    border-left: 3px solid var(--sage-dk);
+  }
+  .subject-details.open { display: block; }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.6rem;
+    padding-top: 0.5rem;
+  }
+  .topic-pill {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--stone);
+    line-height: 1.5;
+  }
+  .topic-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--sage); flex-shrink: 0; }
+
+  .subject-chevron { font-size: 1.2rem; color: var(--stone); transition: transform 0.25s; padding-top: 6px; user-select: none; }
+  .subject-item.open .subject-chevron { transform: rotate(180deg); }
+
+  /* SCHEDULE */
+  .schedule-section {
+    background: var(--cream);
+    padding: 6rem 8vw;
+  }
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 3.5rem;
+  }
+  .day-col { background: var(--white); }
+  .day-header {
+    background: var(--sage-dk);
+    color: var(--white);
+    padding: 0.85rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .day-block {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .block-time { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--stone); margin-bottom: 2px; }
+  .block-subject { font-weight: 400; color: var(--ink); }
+  .block-core { border-left: 2px solid var(--sage); padding-left: 8px; }
+  .block-enrich { border-left: 2px solid var(--bloom); padding-left: 8px; }
+  .block-flex { border-left: 2px solid var(--stone); padding-left: 8px; opacity: 0.7; }
+
+  /* TOOLS */
+  .tools-section { padding: 6rem 8vw; }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .tool-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .tool-card:hover { border-color: var(--sage); transform: translateY(-2px); }
+  .tool-icon { font-size: 1.6rem; margin-bottom: 0.85rem; }
+  .tool-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500; color: var(--ink); margin-bottom: 0.4rem; }
+  .tool-desc { font-size: 0.83rem; color: var(--stone); line-height: 1.65; }
+  .tool-badge { display: inline-block; margin-top: 0.75rem; font-size: 0.67rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 3px 10px; background: var(--sage-lt); color: var(--sage-dk); border-radius: 2px; }
+
+  /* ASSESSMENT */
+  .assessment-section {
+    background: var(--sage-dk);
+    padding: 5rem 8vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6vw;
+    align-items: center;
+  }
+  .assessment-section .section-title { color: var(--white); }
+  .assessment-section .section-intro { color: rgba(255,255,255,0.65); max-width: none; margin-bottom: 0; }
+  .assess-list { list-style: none; }
+  .assess-list li {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .assess-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--bloom); flex-shrink: 0; margin-top: 9px; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 2.5rem 8vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; letter-spacing: 0.05em; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: rgba(255,255,255,0.85); }
+
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    .schedule-grid { grid-template-columns: repeat(2, 1fr); }
+    .assessment-section { grid-template-columns: 1fr; }
+    .subject-item { grid-template-columns: 50px 1fr auto; gap: 1rem; }
+    .subject-details { padding: 0 1.5rem 1.5rem calc(50px + 2rem); }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    Hana Bloom Academy
+    <span>Homeschool · Tomball, Texas</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="academics.html" class="active">Academics</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <p class="page-eyebrow">Curriculum Overview</p>
+  <h1 class="page-title">A structured program<br>built for <em>mastery</em></h1>
+  <p class="page-intro">Hana Bloom Academy offers a comprehensive K–12 curriculum rooted in the classical tradition. Every subject is taught with depth, intentionality, and the belief that well-educated students become well-formed people.</p>
+</section>
+
+<!-- STATS -->
+<div class="stats-band fade-in">
+  <div class="stat"><div class="stat-num">K–12</div><div class="stat-label">Grade Levels</div></div>
+  <div class="stat"><div class="stat-num">180</div><div class="stat-label">Instructional Days / Year</div></div>
+  <div class="stat"><div class="stat-num">6+</div><div class="stat-label">Hours Instruction / Day</div></div>
+  <div class="stat"><div class="stat-num">8</div><div class="stat-label">Core Subject Areas</div></div>
+</div>
+
+<!-- SUBJECTS -->
+<section class="subjects">
+  <p class="section-label fade-in">Core Curriculum</p>
+  <h2 class="section-title fade-in">What we teach — and how</h2>
+  <p class="section-intro fade-in">Click any subject to see the specific topics and skills covered at Hana Bloom Academy.</p>
+
+  <div class="subject-list">
+
+    <div class="subject-item" onclick="toggle(this)">
+      <div class="subject-tag">01</div>
+      <div>
+        <div class="subject-name">Language Arts & English</div>
+        <div class="subject-tagline">Reading, writing, grammar, rhetoric — the foundational skills of every educated person.</div>
+      </div>
+      <div class="subject-chevron">▾</div>
+    </div>
+    <div class="subject-details">
+      <div class="topic-grid">
+        <div class="topic-pill">Phonics & Decoding</div>
+        <div class="topic-pill">Reading Comprehension</div>
+        <div class="topic-pill">Literary Analysis</div>
+        <div class="topic-pill">Vocabulary Development</div>
+        <div class="topic-pill">Narrative Writing</div>
+        <div class="topic-pill">Expository Writing</div>
+        <div class="topic-pill">Persuasive Essay</div>
+        <div class="topic-pill">Grammar & Mechanics</div>
+        <div class="topic-pill">Oral Presentation</div>
+        <div class="topic-pill">Research & Citation</div>
+        <div class="topic-pill">Socratic Seminar</div>
+        <div class="topic-pill">Great Books (Primary Sources)</div>
+      </div>
+    </div>
+
+    <div class="subject-item" onclick="toggle(this)">
+      <div class="subject-tag">02</div>
+      <div>
+        <div class="subject-name">Mathematics</div>
+        <div class="subject-tagline">From number sense to calculus — sequential, mastery-based, and always applied.</div>
+      </div>
+      <div class="subject-chevron">▾</div>
+    </div>
+    <div class="subject-details">
+      <div class="topic-grid">
+        <div class="topic-pill">Arithmetic & Number Sense</div>
+        <div class="topic-pill">Fractions & Decimals</div>
+        <div class="topic-pill">Pre-Algebra</div>
+        <div class="topic-pill">Algebra I & II</div>
+        <div class="topic-pill">Geometry</div>
+        <div class="topic-pill">Trigonometry</div>
+        <div class="topic-pill">Pre-Calculus</div>
+        <div class="topic-pill">Statistics & Probability</div>
+        <div class="topic-pill">Mathematical Reasoning</div>
+        <div class="topic-pill">Real-World Problem Solving</div>
+      </div>
+    </div>
+
+    <div class="subject-item" onclick="toggle(this)">
+      <div class="subject-tag">03</div>
+      <div>
+        <div class="subject-name">Science</div>
+        <div class="subject-tagline">Observation, hypothesis, and the wonder of the natural world — from molecules to ecosystems.</div>
+      </div>
+      <div class="subject-chevron">▾</div>
+    </div>
+    <div class="subject-details">
+      <div class="topic-grid">
+        <div class="topic-pill">Scientific Method</div>
+        <div class="topic-pill">Life Science</div>
+        <div class="topic-pill">Earth & Space Science</div>
+        <div class="topic-pill">Physical Science</div>
+        <div class="topic-pill">Biology</div>
+        <div class="topic-pill">Chemistry (Intro)</div>
+        <div class="topic-pill">Lab-Style Observations</div>
+        <div class="topic-pill">Environmental Science</div>
+        <div class="topic-pill">Anatomy & Health</div>
+        <div class="topic-pill">Science Writing & Reports</div>
+      </div>
+    </div>
+
+    <div class="subject-item" onclick="toggle(this)">
+      <div class="subject-tag">04</div>
+      <div>
+        <div class="subject-name">Social Studies & History</div>
+        <div class="subject-tagline">Knowing where we came from is the first step to understanding where we are going.</div>
+      </div>
+      <div class="subject-chevron">▾</div>
+    </div>
+    <div class="subject-details">
+      <div class="topic-grid">
+        <div class="topic-pill">Texas History</div>
+        <div class="topic-pill">U.S. History</div>
+        <div class="topic-pill">World History</div>
+        <div class="topic-pill">Ancient Civilizations</div>
+        <div class="topic-pill">Geography</div>
+        <div class="topic-pill">Civics & Government</div>
+        <div class="topic-pill">Economics Foundations</div>
+        <div class="topic-pill">Current Events Analysis</div>
+        <div class="topic-pill">Primary Source Study</div>
+        <div class="topic-pill">Map Skills</div>
+      </div>
+    </div>
+
+    <div class="subject-item" onclick="toggle(this)">
+      <div class="subject-tag">05</div>
+      <div>
+        <div class="subject-name">Technology & Digital Literacy</div>
+        <div class="subject-tagline">Responsible, capable, critical users of technology — including artificial intelligence.</div>
+      </div>
+      <div class="subject-chevron">▾</div>
+    </div>
+    <div class="subject-details">
+      <div class="topic-grid">
+        <div class="topic-pill">Digital Safety & Citizenship</div>
+        <div class="topic-pill">Information Evaluation</div>
+        <div class="topic-pill">Typing & Keyboarding</div>
+        <div class="topic-pill">Google Workspace Tools</div>
+        <div class="topic-pill">Research Methods</div>
+        <div class="topic-pill">Introduction to Coding</div>
+        <div class="topic-pill">AI Tools for Learning</div>
+        <div class="topic-pill">Presentation & Media Skills</div>
+        <div class="topic-pill">Cybersecurity Awareness</div>
+      </div>
+    </div>
+
+    <div class="subject-item" onclick="toggle(this)">
+      <div class="subject-tag">06</div>
+      <div>
+        <div class="subject-name">Entrepreneurship & Personal Finance</div>
+        <div class="subject-tagline">Because financial wisdom and a builder's mindset are not optional skills for the next generation.</div>
+      </div>
+      <div class="subject-chevron">▾</div>
+    </div>
+    <div class="subject-details">
+      <div class="topic-grid">
+        <div class="topic-pill">Budgeting & Saving</div>
+        <div class="topic-pill">Investing Fundamentals</div>
+        <div class="topic-pill">Business Concepts</div>
+        <div class="topic-pill">Entrepreneurial Thinking</div>
+        <div class="topic-pill">Family Enterprise Studies</div>
+        <div class="topic-pill">Goal Setting & Planning</div>
+        <div class="topic-pill">Work Ethic & Responsibility</div>
+        <div class="topic-pill">Real-World Projects</div>
+      </div>
+    </div>
+
+    <div class="subject-item" onclick="toggle(this)">
+      <div class="subject-tag">07</div>
+      <div>
+        <div class="subject-name">Fine Arts & Music Appreciation</div>
+        <div class="subject-tagline">Beauty is not a luxury — it is part of a complete education.</div>
+      </div>
+      <div class="subject-chevron">▾</div>
+    </div>
+    <div class="subject-details">
+      <div class="topic-grid">
+        <div class="topic-pill">Art History & Appreciation</div>
+        <div class="topic-pill">Drawing & Visual Arts</div>
+        <div class="topic-pill">Music Theory Basics</div>
+        <div class="topic-pill">Classical Music Appreciation</div>
+        <div class="topic-pill">Creative Writing</div>
+        <div class="topic-pill">Poetry Reading & Writing</div>
+        <div class="topic-pill">Architecture & Design</div>
+      </div>
+    </div>
+
+    <div class="subject-item" onclick="toggle(this)">
+      <div class="subject-tag">08</div>
+      <div>
+        <div class="subject-name">Biblical Studies & Character</div>
+        <div class="subject-tagline">Virtue, wisdom, and faith — woven through every subject, not confined to one.</div>
+      </div>
+      <div class="subject-chevron">▾</div>
+    </div>
+    <div class="subject-details">
+      <div class="topic-grid">
+        <div class="topic-pill">Scripture Study</div>
+        <div class="topic-pill">Biblical Worldview</div>
+        <div class="topic-pill">Character Formation</div>
+        <div class="topic-pill">Ethics & Moral Reasoning</div>
+        <div class="topic-pill">Service & Leadership</div>
+        <div class="topic-pill">Church History (Survey)</div>
+        <div class="topic-pill">Personal Responsibility</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SAMPLE SCHEDULE -->
+<section class="schedule-section">
+  <p class="section-label fade-in">Sample Weekly Schedule</p>
+  <h2 class="section-title fade-in">How a week unfolds<br>at Hana Bloom Academy</h2>
+
+  <div class="schedule-grid fade-in">
+    <div class="day-col">
+      <div class="day-header">Monday</div>
+      <div class="day-block block-core"><div class="block-time">8:00 – 9:30</div><div class="block-subject">Language Arts</div></div>
+      <div class="day-block block-core"><div class="block-time">9:45 – 11:15</div><div class="block-subject">Mathematics</div></div>
+      <div class="day-block block-core"><div class="block-time">12:00 – 1:30</div><div class="block-subject">History</div></div>
+      <div class="day-block block-enrich"><div class="block-time">1:45 – 2:45</div><div class="block-subject">Fine Arts</div></div>
+      <div class="day-block block-flex"><div class="block-time">3:00 – 4:00</div><div class="block-subject">Independent Reading</div></div>
+    </div>
+    <div class="day-col">
+      <div class="day-header">Tuesday</div>
+      <div class="day-block block-core"><div class="block-time">8:00 – 9:30</div><div class="block-subject">Mathematics</div></div>
+      <div class="day-block block-core"><div class="block-time">9:45 – 11:15</div><div class="block-subject">Science</div></div>
+      <div class="day-block block-core"><div class="block-time">12:00 – 1:30</div><div class="block-subject">Language Arts</div></div>
+      <div class="day-block block-enrich"><div class="block-time">1:45 – 2:45</div><div class="block-subject">Biblical Studies</div></div>
+      <div class="day-block block-flex"><div class="block-time">3:00 – 4:00</div><div class="block-subject">Project Work</div></div>
+    </div>
+    <div class="day-col">
+      <div class="day-header">Wednesday</div>
+      <div class="day-block block-core"><div class="block-time">8:00 – 9:30</div><div class="block-subject">Writing Workshop</div></div>
+      <div class="day-block block-core"><div class="block-time">9:45 – 11:15</div><div class="block-subject">Mathematics</div></div>
+      <div class="day-block block-enrich"><div class="block-time">12:00 – 1:30</div><div class="block-subject">Personal Finance</div></div>
+      <div class="day-block block-enrich"><div class="block-time">1:45 – 2:45</div><div class="block-subject">Physical Education</div></div>
+      <div class="day-block block-flex"><div class="block-time">3:00 – 4:00</div><div class="block-subject">Socratic Discussion</div></div>
+    </div>
+    <div class="day-col">
+      <div class="day-header">Thursday</div>
+      <div class="day-block block-core"><div class="block-time">8:00 – 9:30</div><div class="block-subject">Science</div></div>
+      <div class="day-block block-core"><div class="block-time">9:45 – 11:15</div><div class="block-subject">Language Arts</div></div>
+      <div class="day-block block-core"><div class="block-time">12:00 – 1:30</div><div class="block-subject">History</div></div>
+      <div class="day-block block-enrich"><div class="block-time">1:45 – 2:45</div><div class="block-subject">Technology</div></div>
+      <div class="day-block block-flex"><div class="block-time">3:00 – 4:00</div><div class="block-subject">Field Study / Enrichment</div></div>
+    </div>
+    <div class="day-col">
+      <div class="day-header">Friday</div>
+      <div class="day-block block-core"><div class="block-time">8:00 – 9:30</div><div class="block-subject">Mathematics Review</div></div>
+      <div class="day-block block-core"><div class="block-time">9:45 – 11:15</div><div class="block-subject">Reading & Literature</div></div>
+      <div class="day-block block-enrich"><div class="block-time">12:00 – 1:30</div><div class="block-subject">Music Appreciation</div></div>
+      <div class="day-block block-flex"><div class="block-time">1:45 – 3:00</div><div class="block-subject">Weekly Review & Assessment</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS & RESOURCES -->
+<section class="tools-section">
+  <p class="section-label fade-in">Learning Tools</p>
+  <h2 class="section-title fade-in">Resources that power<br>our classroom</h2>
+
+  <div class="tools-grid">
+    <div class="tool-card fade-in">
+      <div class="tool-icon">📚</div>
+      <div class="tool-name">Classical Textbooks</div>
+      <p class="tool-desc">Structured curricula from leading homeschool publishers, selected for rigor and alignment with classical principles.</p>
+      <span class="tool-badge">Core</span>
+    </div>
+    <div class="tool-card fade-in">
+      <div class="tool-icon">🔍</div>
+      <div class="tool-name">Khan Academy</div>
+      <p class="tool-desc">Mastery-based math and science video instruction used for targeted reinforcement and independent practice.</p>
+      <span class="tool-badge">Digital</span>
+    </div>
+    <div class="tool-card fade-in">
+      <div class="tool-icon">📝</div>
+      <div class="tool-name">Google Workspace</div>
+      <p class="tool-desc">Docs, Drive, Classroom, and Slides form our digital learning environment — all under a supervised school account.</p>
+      <span class="tool-badge">Digital</span>
+    </div>
+    <div class="tool-card fade-in">
+      <div class="tool-icon">🤖</div>
+      <div class="tool-name">NotebookLM</div>
+      <p class="tool-desc">Google's AI research tool used for note synthesis, document analysis, and supervised AI-assisted learning projects.</p>
+      <span class="tool-badge">AI-Assisted</span>
+    </div>
+    <div class="tool-card fade-in">
+      <div class="tool-icon">🌍</div>
+      <div class="tool-name">Primary Sources</div>
+      <p class="tool-desc">Library access, historical documents, and original texts replace summaries and textbook summaries wherever possible.</p>
+      <span class="tool-badge">Core</span>
+    </div>
+    <div class="tool-card fade-in">
+      <div class="tool-icon">🏛️</div>
+      <div class="tool-name">Field & Mentor Study</div>
+      <p class="tool-desc">Regular field studies, business mentorship, and real-world application bring learning outside the walls of the academy.</p>
+      <span class="tool-badge">Enrichment</span>
+    </div>
+  </div>
+</section>
+
+<!-- ASSESSMENT -->
+<section class="assessment-section">
+  <div>
+    <p class="section-label" style="color: rgba(255,255,255,0.5)">Student Evaluation</p>
+    <h2 class="section-title fade-in">How we track progress</h2>
+    <p class="section-intro fade-in">Assessment at Hana Bloom Academy is continuous, multi-modal, and focused on genuine mastery — not performance for a single high-stakes test.</p>
+  </div>
+  <ul class="assess-list fade-in">
+    <li>Unit tests and chapter reviews after each completed section</li>
+    <li>Writing portfolios maintained across the academic year</li>
+    <li>Oral recitation and Socratic discussion as regular assessments</li>
+    <li>Annual standardized assessments as benchmarking tools</li>
+    <li>Parent-maintained transcripts and course completion records</li>
+    <li>Real-world project evaluations and skill demonstrations</li>
+    <li>Quarterly family reviews to assess pace, gaps, and direction</li>
+  </ul>
+</section>
+
+<footer>
+  <span>© 2025 Hana Bloom Academy · Tomball, Texas · Private Homeschool</span>
+  <div style="display:flex; gap:2rem;">
+    <a href="index.html">Home</a>
+    <a href="academics.html">Academics</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</footer>
+
+<script>
+  function toggle(item) {
+    const details = item.nextElementSibling;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.subject-item.open').forEach(el => {
+      el.classList.remove('open');
+      el.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      details.classList.add('open');
+    }
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
