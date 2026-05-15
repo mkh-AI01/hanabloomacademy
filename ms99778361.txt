@@ -1,0 +1,5 @@
+﻿{
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "hanabloomacademy.org",
+  "Id": "bd0cd465-c9be-45fa-b466-093b2a919e5e"
+}
